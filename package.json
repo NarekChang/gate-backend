@@ -1,0 +1,25 @@
+{
+  "name": "gate",
+  "version": "1.0.0",
+  "description": "backend gate",
+  "main": "app.js",
+  "author": "Narek Changlyan",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.16",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-fileupload": "^1.0.0-alpha.1",
+    "express-session": "^1.15.6",
+    "graphql": "^14.5.8",
+    "mongodb": "2.2.33",
+    "nodemon": "^1.17.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sha1": "^1.1.1"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "prod": "node ./app.js"
+  }
+}

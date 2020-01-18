@@ -1,0 +1,36 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+// const fileUpload = require('express-fileupload')
+
+const db = require('./db')
+
+const adminsController = require('./controllers/admins')
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  next()
+})
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+// app.use('/feed', fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 },
+// }))
+
+//db.connect('mongodb://mongo:27017/vocapp', (err) => {
+  db.connect('mongodb://127.0.0.1:27017/vocapp', (err) => {
+  if (err) return console.log(err)
+
+  app.listen(3012, () => {
+    console.log('API app started!')
+  })
+})
+
+app.post('/admins', adminsController.all)
+
+app.get('/', (req, res) => {
+  res.send('What did u want to see here?')
+})

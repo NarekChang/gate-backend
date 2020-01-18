@@ -1,0 +1,14 @@
+version: '3'
+services:
+  node_backend:
+    image: node:carbon-alpine
+    external_links:
+      - vocapp-mongo:mongo
+    working_dir: /usr/src/app
+    command: ["npm", "run", "prod"]
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 81:3012
+    volumes:
+      - ./:/usr/src/app
