@@ -124,15 +124,16 @@ const express = __webpack_require__(/*! express */ "express");
 
 const bodyParser = __webpack_require__(/*! body-parser */ "body-parser");
 
-const app = express(); // const fileUpload = require('express-fileupload')
+const app = express();
 
 const db = __webpack_require__(/*! ../db */ "./db.js");
 
 const dataController = __webpack_require__(/*! ./controllers/data */ "./src/controllers/data.js");
 
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Origin', '*'); // 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
@@ -140,15 +141,14 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
-})); // db.connect('mongodb://mongo:27017/vocapp', (err) => {
+})); // db.connect('mongodb://mongo:27017/gate', (err) => {
 
-db.connect('mongodb://127.0.0.1:27017/vocapp', err => {
+db.connect('mongodb://127.0.0.1:27017/gate', err => {
   if (err) return console.log(err);
   app.listen(3012, () => {
     console.log('API app started!');
   });
-}); // app.post('/admins', adminsController.all)
-
+});
 app.get('/places', dataController.getPlaces);
 app.get('/', (req, res) => {
   res.send('What did u want to see here?');
@@ -173,7 +173,7 @@ exports.getPlaces = (req, res) => {
     max_longitude = '',
     city_id = '',
     limit = '',
-    cursor = 0
+    cursor = ''
   } = req;
   Data.getPlaces({
     min_latitude,
@@ -205,7 +205,7 @@ const db = __webpack_require__(/*! ../../db */ "./db.js");
 
 const ObjectID = __webpack_require__(/*! mongodb */ "mongodb").ObjectID;
 
-exports.getPlaces = (userID, cb) => {
+exports.getPlaces = (userID, cursor, cb) => {
   db.get().collection('users').findOne({
     userID: userID
   }, (err, doc) => {

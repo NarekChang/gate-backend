@@ -8,7 +8,7 @@ exports.getPlaces = (req, res) => {
     max_longitude = '',
     city_id = '',
     limit = '',
-    cursor = 0
+    cursor = ''
   } = req
 
   Data.getPlaces({
