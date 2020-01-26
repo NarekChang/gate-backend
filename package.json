@@ -21,12 +21,19 @@
   "scripts": {
     "start": "nodemon app.js",
     "build": "babel ./src --out-dir dist",
-    "prod": "node ./app.js"
+    "build:prod": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "dev": "npm run build:dev -- --watch",
+    "prod": "node ./dist/app.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
     "@babel/preset-flow": "^7.8.3",
-    "flow-bin": "^0.116.1"
+    "babel-loader": "^8.0.6",
+    "flow-bin": "^0.116.1",
+    "nodemon-webpack-plugin": "^4.2.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   }
 }

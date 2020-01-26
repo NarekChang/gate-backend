@@ -3,9 +3,9 @@ const bodyParser = require('body-parser')
 const app = express()
 // const fileUpload = require('express-fileupload')
 
-const db = require('./db')
+const db = require('../db')
 
-const dataController = require('./dist/controllers/data')
+const dataController = require('./controllers/data')
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
