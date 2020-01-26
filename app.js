@@ -5,7 +5,7 @@ const app = express()
 
 const db = require('./db')
 
-const dataController = require('./src/controllers/data')
+const dataController = require('./dist/controllers/data')
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -17,8 +17,8 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-db.connect('mongodb://mongo:27017/vocapp', (err) => {
-// db.connect('mongodb://127.0.0.1:27017/vocapp', (err) => {
+// db.connect('mongodb://mongo:27017/vocapp', (err) => {
+db.connect('mongodb://127.0.0.1:27017/vocapp', (err) => {
   if (err) return console.log(err)
 
   app.listen(3012, () => {
