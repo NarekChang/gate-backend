@@ -5,12 +5,10 @@ const state = {
 }
 
 exports.connect = (url, done) => {
-  if(state.db){
-    return db
-  }
+  if (state.db) return state.db
 
   MongoClient.connect(url, (err, db) => {
-    if(err) return done(err)
+    if (err) return done(err)
 
     state.db = db
     done()
