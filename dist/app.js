@@ -167,22 +167,24 @@ const Data = __webpack_require__(/*! ../models/data */ "./src/models/data.js");
 
 exports.getPlaces = (req, res) => {
   const {
-    min_latitude = '',
-    min_longitude = '',
-    max_latitude = '',
-    max_longitude = '',
-    city_id = '',
-    limit = '',
-    cursor = ''
+    query = {}
   } = req;
+  const {
+    min_latitude,
+    min_longitude,
+    max_latitude,
+    max_longitude,
+    city_id = false,
+    limit = 99999,
+    cursor = 1
+  } = query;
   Data.getPlaces({
     min_latitude,
     min_longitude,
     max_latitude,
     max_longitude,
-    city_id,
-    limit
-  }, cursor, (err, docs) => {
+    city_id
+  }, limit, cursor, (err, docs) => {
     if (err) {
       console.log(err);
       return res.sendStatus(500);
@@ -205,11 +207,45 @@ const db = __webpack_require__(/*! ../../db */ "./db.js");
 
 const ObjectID = __webpack_require__(/*! mongodb */ "mongodb").ObjectID;
 
-exports.getPlaces = (userID, cursor, cb) => {
-  db.get().collection('users').findOne({
-    userID: userID
-  }, (err, doc) => {
-    if (!!!doc) cb(true, doc);else cb(err, doc);
+const paginate = (array, page_size, page_number) => array.slice((page_number - 1) * page_size, page_number * page_size);
+
+const inRange = (min, max, val) => val >= min && val <= max;
+
+exports.getPlaces = (filters, limit, cursor, cb) => {
+  const {
+    city_id
+  } = filters;
+  const filter = {};
+  if (city_id) filter.city_id = city_id;
+  db.get().collection('places').findOne(filter, (err, docs) => {
+    if (!!docs) cb(true, docs);else {
+      const filteredList = [{
+        test: 1,
+        latitude: '0',
+        longitude: '20'
+      }, {
+        test: 2,
+        latitude: '0',
+        longitude: '0'
+      }, {
+        test: 3,
+        latitude: '0',
+        longitude: '0'
+      }].filter(item => {
+        const {
+          latitude,
+          longitude
+        } = item;
+        const {
+          min_latitude = -1,
+          min_longitude = -1,
+          max_latitude = 9999,
+          max_longitude = 9999
+        } = filters;
+        return inRange(min_latitude, max_latitude, latitude) && inRange(min_longitude, max_longitude, longitude);
+      });
+      cb(err, paginate(filteredList, limit, cursor));
+    }
   });
 };
 
