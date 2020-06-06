@@ -6,7 +6,7 @@
   "author": "Narek Changlyan",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.9.16",
+    "apollo-server": "^2.14.2",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "express-fileupload": "^1.0.0-alpha.1",
